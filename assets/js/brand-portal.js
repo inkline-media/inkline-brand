@@ -915,6 +915,7 @@
     let modalWidth = 64;
     let modalHeight = 64;
     let naturalRatio = 1;
+    let expandedViewBox = null; // Stores expanded viewBox string if content extends beyond original
 
     /* ---- DOM references ---- */
     const grid      = () => document.getElementById('icon-grid');
@@ -1046,41 +1047,35 @@
             if (svgEl) {
               // Ensure fill uses currentColor for recoloring
               if (!svgEl.getAttribute('fill')) svgEl.setAttribute('fill', 'currentColor');
-              // Force overflow hidden as SVG attribute (Safari ignores CSS overflow on inline SVGs)
               svgEl.setAttribute('overflow', 'hidden');
-              // Parse viewBox for aspect ratio
+              // Strip explicit width/height so SVG renders at viewBox size initially
+              svgEl.removeAttribute('width');
+              svgEl.removeAttribute('height');
+              // Parse original viewBox
               const vb = svgEl.getAttribute('viewBox');
               let vbW = 512, vbH = 512, vbX = 0, vbY = 0;
               if (vb) {
                 const parts = vb.split(/[\s,]+/).map(Number);
                 if (parts.length === 4 && parts[3] !== 0) {
-                  vbX = parts[0];
-                  vbY = parts[1];
-                  vbW = parts[2];
-                  vbH = parts[3];
-                  naturalRatio = vbW / vbH;
+                  vbX = parts[0]; vbY = parts[1]; vbW = parts[2]; vbH = parts[3];
                 }
               }
-              // Add clipPath to viewBox bounds (bulletproof cross-browser clipping)
-              const ns = 'http://www.w3.org/2000/svg';
-              const defs = document.createElementNS(ns, 'defs');
-              const clipPath = document.createElementNS(ns, 'clipPath');
-              clipPath.setAttribute('id', 'vb-clip');
-              const rect = document.createElementNS(ns, 'rect');
-              rect.setAttribute('x', vbX);
-              rect.setAttribute('y', vbY);
-              rect.setAttribute('width', vbW);
-              rect.setAttribute('height', vbH);
-              clipPath.appendChild(rect);
-              defs.appendChild(clipPath);
-              svgEl.insertBefore(defs, svgEl.firstChild);
-              // Wrap existing content in a group with clip-path
-              const g = document.createElementNS(ns, 'g');
-              g.setAttribute('clip-path', 'url(#vb-clip)');
-              while (svgEl.childNodes.length > 1) {
-                g.appendChild(svgEl.childNodes[1]);
-              }
-              svgEl.appendChild(g);
+              // Expand viewBox to include any paths that extend beyond it (common in FontAwesome)
+              expandedViewBox = null;
+              try {
+                const bbox = svgEl.getBBox();
+                const bx = bbox.x, by = bbox.y, bw = bbox.width, bh = bbox.height;
+                const newX = Math.min(vbX, bx);
+                const newY = Math.min(vbY, by);
+                const newW = Math.max(vbX + vbW, bx + bw) - newX;
+                const newH = Math.max(vbY + vbH, by + bh) - newY;
+                if (newW !== vbW || newH !== vbH || newX !== vbX || newY !== vbY) {
+                  expandedViewBox = `${newX} ${newY} ${newW} ${newH}`;
+                  svgEl.setAttribute('viewBox', expandedViewBox);
+                  vbX = newX; vbY = newY; vbW = newW; vbH = newH;
+                }
+              } catch(e) { /* getBBox may fail if not rendered yet */ }
+              naturalRatio = vbW / vbH;
               // Fit SVG within preview box
               // h-48 = 192px, p-6 = 24px each side → 144px available height
               const maxW = (preview.offsetWidth || 400) - 48;
@@ -1141,8 +1136,14 @@
 
       const baseName = `${modalIcon.n}-${modalWidth}x${modalHeight}`;
 
+      // Apply expanded viewBox if content extends beyond original viewBox
+      let dlSvgStr = svgStr;
+      if (expandedViewBox) {
+        dlSvgStr = dlSvgStr.replace(/viewBox=["'][^"']+["']/, `viewBox="${expandedViewBox}"`);
+      }
+
       if (format === 'svg') {
-        let modified = svgStr
+        let modified = dlSvgStr
           .replace(/<svg/, `<svg width="${modalWidth}" height="${modalHeight}"`)
           .replace(/fill="currentColor"/g, `fill="${modalColor}"`);
         const blob = new Blob([modified], { type: 'image/svg+xml' });
@@ -1150,7 +1151,7 @@
         downloadDataURL(url, `${baseName}.svg`);
         URL.revokeObjectURL(url);
       } else {
-        let coloredSVG = svgStr
+        let coloredSVG = dlSvgStr
           .replace(/fill="currentColor"/g, `fill="${modalColor}"`)
           .replace(/(<svg[^>]*?)(?:\s+width="[^"]*")?(?:\s+height="[^"]*")?/, `$1 width="${modalWidth}" height="${modalHeight}"`);
         if (!coloredSVG.includes('xmlns=')) {
