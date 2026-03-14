@@ -1,0 +1,737 @@
+/* ==========================================================================
+   Inkline Brand Portal - Custom Styles
+   Supplements TailwindCSS (CDN). Only includes styles Tailwind can't handle
+   or that are more maintainable as plain CSS.
+   ========================================================================== */
+
+/* --------------------------------------------------------------------------
+   1. Custom Properties (Brand Tokens)
+   -------------------------------------------------------------------------- */
+
+:root {
+  /* Brand Colors */
+  --color-cerulean: #1399CC;
+  --color-cobalt: #0057B8;
+  --color-magenta: #E10098;
+  --color-bubblegum: #FF66C9;
+  --color-shamrock: #34AE17;
+  --color-lime: #C5E600;
+  --color-nearly-black: #101010;
+  --color-medium-grey: #8E8E8E;
+  --color-light-grey: #D3D3D6;
+
+  /* Fonts */
+  --font-primary: 'Inter Tight', sans-serif;
+  --font-secondary: 'IBM Plex Serif', serif;
+
+  /* Transitions */
+  --transition-fast: 150ms ease;
+  --transition-base: 250ms ease;
+  --transition-slow: 400ms ease;
+}
+
+
+/* --------------------------------------------------------------------------
+   2. Smooth Scrolling
+   -------------------------------------------------------------------------- */
+
+html {
+  scroll-behavior: smooth;
+}
+
+
+/* --------------------------------------------------------------------------
+   3. PDF Viewer
+   -------------------------------------------------------------------------- */
+
+.pdf-viewer {
+  position: relative;
+  overflow: hidden;
+}
+
+.pdf-viewer canvas {
+  display: block;
+  max-width: 100%;
+  height: auto;
+}
+
+.pdf-page-spread {
+  display: flex;
+  justify-content: center;
+  width: 100%;
+}
+
+.pdf-page-spread canvas {
+  max-width: 100%;
+  height: auto;
+}
+
+
+/* --------------------------------------------------------------------------
+   4. Icon Grid
+   -------------------------------------------------------------------------- */
+
+.icon-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+  gap: 0.75rem;
+}
+
+.icon-grid-cell {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 0.75rem 0.5rem 0.5rem;
+  border-radius: 0.5rem;
+  border: 1px solid var(--color-light-grey);
+  cursor: pointer;
+  transition: box-shadow var(--transition-base), transform var(--transition-fast);
+}
+
+.icon-grid-cell .icon-svg {
+  width: 32px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.icon-grid-cell:hover {
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  transform: translateY(-2px);
+}
+
+.icon-grid-cell .icon-svg svg {
+  width: 100%;
+  height: 100%;
+}
+
+.icon-grid-cell .icon-name {
+  display: block;
+  width: 100%;
+  margin-top: 0.375rem;
+  font-size: 0.625rem;
+  color: var(--color-medium-grey);
+  text-align: center;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.icon-grid-cell {
+  position: relative;
+}
+
+.icon-style-badge {
+  position: absolute;
+  top: 3px;
+  right: 4px;
+  font-size: 0.5rem;
+  font-weight: 600;
+  color: var(--color-medium-grey);
+  opacity: 0.5;
+  line-height: 1;
+  pointer-events: none;
+}
+
+
+/* --------------------------------------------------------------------------
+   5a. Icon Modal Preview
+   -------------------------------------------------------------------------- */
+
+.icon-modal-preview {
+  overflow: hidden;
+}
+
+.icon-modal-preview svg {
+  display: block;
+  max-width: 100%;
+  max-height: 100%;
+}
+
+/* --------------------------------------------------------------------------
+   5. Modal Overlay
+   -------------------------------------------------------------------------- */
+
+.modal-backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 50;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(16, 16, 16, 0.6);
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity var(--transition-base), visibility var(--transition-base);
+}
+
+.modal-backdrop.is-active {
+  opacity: 1;
+  visibility: visible;
+}
+
+.modal-content {
+  position: relative;
+  width: 90%;
+  max-width: 640px;
+  max-height: 85vh;
+  overflow-y: auto;
+  background: #fff;
+  border-radius: 0.75rem;
+  box-shadow: 0 24px 48px rgba(0, 0, 0, 0.2);
+  transform: translateY(24px);
+  transition: transform var(--transition-base);
+}
+
+/* Brand book modal needs a larger max-width */
+#brand-book-modal .modal-content {
+  max-width: 72rem;
+  max-height: 95vh;
+}
+
+/* PDF canvases inside modal should fill available height */
+#brand-book-modal .pdf-viewer {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+#brand-book-modal .pdf-page-spread {
+  max-height: calc(95vh - 140px);
+}
+
+#brand-book-modal .pdf-page-spread canvas {
+  max-height: calc(95vh - 160px);
+  object-fit: contain;
+}
+
+.modal-backdrop.is-active .modal-content {
+  transform: translateY(0);
+}
+
+
+/* --------------------------------------------------------------------------
+   5b. Logo Preview — constrain inlined SVGs
+   -------------------------------------------------------------------------- */
+
+.logo-preview {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1.5rem;
+  border-radius: 0.75rem;
+  transition: background-color var(--transition-base);
+}
+
+.logo-preview svg {
+  max-width: 100%;
+  max-height: 100%;
+  width: auto;
+  height: auto;
+}
+
+.logo-preview--dark {
+  background-color: var(--color-nearly-black);
+}
+
+.app-icon-sizes {
+  padding: 0.75rem;
+  border-radius: 1rem;
+  transition: background-color var(--transition-base);
+}
+
+.app-icon-sizes.logo-preview--dark {
+  background-color: var(--color-nearly-black);
+}
+
+
+/* --------------------------------------------------------------------------
+   6. Color Swatch
+   -------------------------------------------------------------------------- */
+
+.color-swatch {
+  position: relative;
+  width: 4rem;
+  height: 4rem;
+  border-radius: 50%;
+  cursor: pointer;
+  transition: box-shadow var(--transition-base), transform var(--transition-fast);
+  border: 2px solid transparent;
+}
+
+.color-swatch--square {
+  border-radius: 0.5rem;
+}
+
+.color-swatch:hover {
+  transform: scale(1.08);
+  box-shadow: 0 0 0 3px var(--color-cerulean);
+}
+
+.color-swatch.is-copied::after {
+  content: 'Copied!';
+  position: absolute;
+  bottom: -1.75rem;
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: 0.625rem;
+  font-family: var(--font-primary);
+  font-weight: 600;
+  color: var(--color-cerulean);
+  white-space: nowrap;
+  animation: swatch-copied-fade 1.2s ease forwards;
+}
+
+@keyframes swatch-copied-fade {
+  0%   { opacity: 0; transform: translateX(-50%) translateY(4px); }
+  20%  { opacity: 1; transform: translateX(-50%) translateY(0); }
+  80%  { opacity: 1; transform: translateX(-50%) translateY(0); }
+  100% { opacity: 0; transform: translateX(-50%) translateY(-4px); }
+}
+
+
+/* --------------------------------------------------------------------------
+   7. Font Specimen
+   -------------------------------------------------------------------------- */
+
+.font-specimen {
+  border: 1px solid var(--color-light-grey);
+  border-radius: 0.5rem;
+  padding: 1.5rem;
+  transition: border-color var(--transition-base);
+}
+
+.font-specimen:focus-within {
+  border-color: var(--color-cerulean);
+}
+
+.font-specimen [contenteditable] {
+  outline: none;
+  min-height: 1.5em;
+  caret-color: var(--color-cerulean);
+}
+
+.font-specimen [contenteditable]:empty::before {
+  content: attr(data-placeholder);
+  color: var(--color-medium-grey);
+  pointer-events: none;
+}
+
+
+/* --------------------------------------------------------------------------
+   8. Photo Gallery
+   -------------------------------------------------------------------------- */
+
+.photo-gallery {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 1rem;
+}
+
+.photo-gallery-item,
+.photo-cell {
+  position: relative;
+  overflow: hidden;
+  border-radius: 0.5rem;
+  aspect-ratio: 4 / 3;
+  cursor: pointer;
+}
+
+.photo-gallery-item img,
+.photo-cell img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform var(--transition-slow);
+}
+
+.photo-gallery-item:hover img,
+.photo-cell:hover img {
+  transform: scale(1.05);
+}
+
+.photo-gallery-item::after,
+.photo-cell::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(16, 16, 16, 0.4);
+  opacity: 0;
+  transition: opacity var(--transition-base);
+  /* Zoom icon via inline SVG background */
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='28' height='28' fill='none' stroke='%23fff' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Ccircle cx='11' cy='11' r='8'/%3E%3Cline x1='21' y1='21' x2='16.65' y2='16.65'/%3E%3Cline x1='11' y1='8' x2='11' y2='14'/%3E%3Cline x1='8' y1='11' x2='14' y2='11'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: center;
+}
+
+.photo-gallery-item:hover::after,
+.photo-cell:hover::after {
+  opacity: 1;
+}
+
+
+/* --------------------------------------------------------------------------
+   9. Lightbox
+   -------------------------------------------------------------------------- */
+
+.lightbox {
+  position: fixed;
+  inset: 0;
+  z-index: 60;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(16, 16, 16, 0.92);
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity var(--transition-base), visibility var(--transition-base);
+}
+
+.lightbox.is-active {
+  opacity: 1;
+  visibility: visible;
+}
+
+.lightbox img {
+  max-width: 90vw;
+  max-height: 85vh;
+  object-fit: contain;
+  border-radius: 0.25rem;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5);
+}
+
+.lightbox-nav {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 3rem;
+  height: 3rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 50%;
+  color: #fff;
+  font-size: 1.25rem;
+  cursor: pointer;
+  transition: background var(--transition-fast);
+}
+
+.lightbox-nav:hover {
+  background: rgba(255, 255, 255, 0.25);
+}
+
+.lightbox-nav--prev { left: 1.5rem; }
+.lightbox-nav--next { right: 1.5rem; }
+
+.lightbox-close {
+  position: absolute;
+  top: 1.5rem;
+  right: 1.5rem;
+  width: 2.5rem;
+  height: 2.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 50%;
+  color: #fff;
+  font-size: 1.25rem;
+  cursor: pointer;
+  transition: background var(--transition-fast);
+}
+
+.lightbox-close:hover {
+  background: rgba(255, 255, 255, 0.25);
+}
+
+
+/* --------------------------------------------------------------------------
+   10. Toast Notification
+   -------------------------------------------------------------------------- */
+
+.toast-container {
+  position: fixed;
+  bottom: 1.5rem;
+  right: 1.5rem;
+  z-index: 70;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  pointer-events: none;
+}
+
+.toast {
+  pointer-events: auto;
+  padding: 0.75rem 1.25rem;
+  background: var(--color-nearly-black);
+  color: #fff;
+  font-family: var(--font-primary);
+  font-size: 0.875rem;
+  border-radius: 0.5rem;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.25);
+  animation: toast-in var(--transition-base) ease forwards;
+}
+
+.toast.is-leaving {
+  animation: toast-out var(--transition-base) ease forwards;
+}
+
+@keyframes toast-in {
+  from {
+    opacity: 0;
+    transform: translateY(12px) translateX(12px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) translateX(0);
+  }
+}
+
+@keyframes toast-out {
+  from {
+    opacity: 1;
+    transform: translateY(0) translateX(0);
+  }
+  to {
+    opacity: 0;
+    transform: translateY(8px) translateX(12px);
+  }
+}
+
+
+/* --------------------------------------------------------------------------
+   11. Custom Range Slider
+   -------------------------------------------------------------------------- */
+
+input[type="range"].brand-slider {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 100%;
+  height: 4px;
+  background: var(--color-light-grey);
+  border-radius: 2px;
+  outline: none;
+}
+
+input[type="range"].brand-slider::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  background: var(--color-cerulean);
+  border: 2px solid #fff;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.2);
+  cursor: pointer;
+  transition: transform var(--transition-fast), box-shadow var(--transition-fast);
+}
+
+input[type="range"].brand-slider::-webkit-slider-thumb:hover {
+  transform: scale(1.2);
+  box-shadow: 0 2px 8px rgba(19, 153, 204, 0.4);
+}
+
+input[type="range"].brand-slider::-moz-range-thumb {
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  background: var(--color-cerulean);
+  border: 2px solid #fff;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.2);
+  cursor: pointer;
+  transition: transform var(--transition-fast), box-shadow var(--transition-fast);
+}
+
+input[type="range"].brand-slider::-moz-range-track {
+  height: 4px;
+  background: var(--color-light-grey);
+  border-radius: 2px;
+}
+
+
+/* --------------------------------------------------------------------------
+   12. Scrollbar Styling
+   -------------------------------------------------------------------------- */
+
+* {
+  scrollbar-width: thin;
+  scrollbar-color: var(--color-cerulean) transparent;
+}
+
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--color-cerulean);
+  border-radius: 3px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--color-cobalt);
+}
+
+
+/* --------------------------------------------------------------------------
+   13. Loading Skeleton
+   -------------------------------------------------------------------------- */
+
+.skeleton {
+  background: linear-gradient(
+    90deg,
+    var(--color-light-grey) 25%,
+    #e8e8ea 37%,
+    var(--color-light-grey) 63%
+  );
+  background-size: 200% 100%;
+  animation: skeleton-pulse 1.5s ease-in-out infinite;
+  border-radius: 0.375rem;
+}
+
+@keyframes skeleton-pulse {
+  0%   { background-position: 200% 0; }
+  100% { background-position: -200% 0; }
+}
+
+
+/* --------------------------------------------------------------------------
+   14. Section Divider
+   -------------------------------------------------------------------------- */
+
+.section-divider {
+  border: none;
+  height: 1px;
+  background: var(--color-cerulean);
+  opacity: 0.3;
+}
+
+
+/* --------------------------------------------------------------------------
+   15. Navigation - Active Section Indicator
+   -------------------------------------------------------------------------- */
+
+.nav-link {
+  position: relative;
+  transition: color var(--transition-base);
+}
+
+.nav-link::after {
+  content: '';
+  position: absolute;
+  bottom: -2px;
+  left: 0;
+  width: 0;
+  height: 2px;
+  background: var(--color-cerulean);
+  border-radius: 1px;
+  transition: width var(--transition-base);
+}
+
+.nav-link:hover::after,
+.nav-link.is-active::after {
+  width: 100%;
+}
+
+.nav-link.is-active {
+  color: var(--color-cerulean);
+}
+
+
+/* --------------------------------------------------------------------------
+   16. Transition / Animation Utilities
+   (Fills gaps not covered by Tailwind's defaults)
+   -------------------------------------------------------------------------- */
+
+.fade-in      { animation: fade-in var(--transition-base) ease forwards; }
+.fade-out     { animation: fade-out var(--transition-base) ease forwards; }
+.slide-up     { animation: slide-up var(--transition-base) ease forwards; }
+.slide-down   { animation: slide-down var(--transition-base) ease forwards; }
+
+@keyframes fade-in {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
+@keyframes fade-out {
+  from { opacity: 1; }
+  to   { opacity: 0; }
+}
+
+@keyframes slide-up {
+  from { opacity: 0; transform: translateY(12px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes slide-down {
+  from { opacity: 0; transform: translateY(-12px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+
+/* --------------------------------------------------------------------------
+   17. Responsive Adjustments
+   -------------------------------------------------------------------------- */
+
+@media (max-width: 640px) {
+  /* Modal: full-width on small screens */
+  .modal-content {
+    width: 100%;
+    max-width: 100%;
+    max-height: 100vh;
+    border-radius: 0;
+  }
+
+  /* Lightbox: tighter padding, smaller nav */
+  .lightbox img {
+    max-width: 100vw;
+    max-height: 80vh;
+    border-radius: 0;
+  }
+
+  .lightbox-nav {
+    width: 2.5rem;
+    height: 2.5rem;
+    font-size: 1rem;
+  }
+
+  .lightbox-nav--prev { left: 0.5rem; }
+  .lightbox-nav--next { right: 0.5rem; }
+
+  .lightbox-close {
+    top: 0.75rem;
+    right: 0.75rem;
+  }
+
+  /* Toast: full-width on mobile */
+  .toast-container {
+    left: 1rem;
+    right: 1rem;
+    bottom: 1rem;
+  }
+
+  /* Photo gallery: 2 columns minimum */
+  .photo-gallery {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  /* Icon grid: smaller cells */
+  .icon-grid {
+    grid-template-columns: repeat(auto-fill, minmax(80px, 1fr));
+    gap: 0.5rem;
+  }
+}
