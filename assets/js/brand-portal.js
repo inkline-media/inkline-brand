@@ -1046,23 +1046,57 @@
             if (svgEl) {
               // Ensure fill uses currentColor for recoloring
               if (!svgEl.getAttribute('fill')) svgEl.setAttribute('fill', 'currentColor');
+              // Force overflow hidden as SVG attribute (Safari ignores CSS overflow on inline SVGs)
+              svgEl.setAttribute('overflow', 'hidden');
               // Parse viewBox for aspect ratio
               const vb = svgEl.getAttribute('viewBox');
-              let vbW = 512, vbH = 512;
+              let vbW = 512, vbH = 512, vbX = 0, vbY = 0;
               if (vb) {
                 const parts = vb.split(/[\s,]+/).map(Number);
                 if (parts.length === 4 && parts[3] !== 0) {
+                  vbX = parts[0];
+                  vbY = parts[1];
                   vbW = parts[2];
                   vbH = parts[3];
                   naturalRatio = vbW / vbH;
                 }
               }
-              // Fit SVG within preview box (account for padding)
-              const maxW = preview.clientWidth - 48;
-              const maxH = preview.clientHeight - 48;
-              const scale = Math.min(maxW / vbW, maxH / vbH, 1);
-              svgEl.setAttribute('width', Math.round(vbW * scale));
-              svgEl.setAttribute('height', Math.round(vbH * scale));
+              // Add clipPath to viewBox bounds (bulletproof cross-browser clipping)
+              const ns = 'http://www.w3.org/2000/svg';
+              const defs = document.createElementNS(ns, 'defs');
+              const clipPath = document.createElementNS(ns, 'clipPath');
+              clipPath.setAttribute('id', 'vb-clip');
+              const rect = document.createElementNS(ns, 'rect');
+              rect.setAttribute('x', vbX);
+              rect.setAttribute('y', vbY);
+              rect.setAttribute('width', vbW);
+              rect.setAttribute('height', vbH);
+              clipPath.appendChild(rect);
+              defs.appendChild(clipPath);
+              svgEl.insertBefore(defs, svgEl.firstChild);
+              // Wrap existing content in a group with clip-path
+              const g = document.createElementNS(ns, 'g');
+              g.setAttribute('clip-path', 'url(#vb-clip)');
+              while (svgEl.childNodes.length > 1) {
+                g.appendChild(svgEl.childNodes[1]);
+              }
+              svgEl.appendChild(g);
+              // Fit SVG within preview box
+              // h-48 = 192px, p-6 = 24px each side → 144px available height
+              const maxW = (preview.offsetWidth || 400) - 48;
+              const maxH = 144;
+              const fitW = maxW;
+              const fitH = fitW * (vbH / vbW);
+              let finalW, finalH;
+              if (fitH <= maxH) {
+                finalW = fitW;
+                finalH = fitH;
+              } else {
+                finalH = maxH;
+                finalW = maxH * (vbW / vbH);
+              }
+              svgEl.setAttribute('width', Math.round(finalW));
+              svgEl.setAttribute('height', Math.round(finalH));
             }
           }
         });
