@@ -748,8 +748,8 @@ input[type="range"].brand-slider::-moz-range-track {
 }
 
 @keyframes bounce-hint {
-  0%, 100% { transform: translateY(0); }
-  30%      { transform: translateY(-8px); }
-  50%      { transform: translateY(0); }
-  70%      { transform: translateY(-4px); }
+  0%, 100% { transform: translateX(-50%) translateY(0); }
+  30%      { transform: translateX(-50%) translateY(-8px); }
+  50%      { transform: translateX(-50%) translateY(0); }
+  70%      { transform: translateX(-50%) translateY(-4px); }
 }
