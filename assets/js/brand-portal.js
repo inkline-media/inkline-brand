@@ -619,9 +619,13 @@
           const swatch = e.target.closest('[data-color]');
           if (!swatch) return;
           activeColor = swatch.dataset.color;
-          // Update active state
-          picker.querySelectorAll('[data-color]').forEach(s => s.classList.remove('active'));
-          swatch.classList.add('active');
+          // Update active ring styling
+          picker.querySelectorAll('[data-color]').forEach(s => {
+            s.classList.remove('border-cerulean', 'border-cobalt', 'border-magenta', 'border-bubblegum', 'border-shamrock', 'border-lime', 'border-nearly-black', 'border-medium-grey', 'ring-2', 'ring-cerulean', 'ring-cobalt', 'ring-magenta', 'ring-bubblegum', 'ring-shamrock', 'ring-lime', 'ring-nearly-black', 'ring-offset-2', 'ring-1', 'ring-light-grey');
+            s.classList.add('border-transparent');
+          });
+          swatch.classList.remove('border-transparent');
+          swatch.classList.add('ring-2', 'ring-offset-2');
           refreshAll();
         });
       }
