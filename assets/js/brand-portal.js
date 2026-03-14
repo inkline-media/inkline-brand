@@ -401,7 +401,7 @@
    * ================================================================ */
 
   const LogoSection = (() => {
-    let activeColor = 'cerulean';
+    let activeColor = 'cobalt';
     let activeFormat = 'svg';
     let canvasMode = false;
 
@@ -520,7 +520,7 @@
       }
     }
 
-    let appIconColor = 'cerulean';
+    let appIconColor = 'cobalt';
 
     // Platform file manifests (all files to include in zip)
     const PLATFORM_FILES = {
@@ -911,7 +911,7 @@
 
     // Modal state
     let modalIcon = null;
-    let modalColor = BRAND_COLORS.cerulean.hex;
+    let modalColor = BRAND_COLORS.cobalt.hex;
     let modalWidth = 64;
     let modalHeight = 64;
     let naturalRatio = 1;
