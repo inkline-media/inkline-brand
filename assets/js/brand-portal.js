@@ -218,6 +218,17 @@
       // Scroll spy
       window.addEventListener('scroll', debounce(updateActiveLink, 50), { passive: true });
       updateActiveLink();
+
+      // Back to top button — show once scrolled past the hero
+      const backToTop = document.getElementById('back-to-top');
+      if (backToTop) {
+        window.addEventListener('scroll', () => {
+          const show = window.scrollY > window.innerHeight;
+          backToTop.classList.toggle('opacity-0', !show);
+          backToTop.classList.toggle('pointer-events-none', !show);
+          backToTop.classList.toggle('opacity-100', show);
+        }, { passive: true });
+      }
     }
 
     function updateActiveLink() {
