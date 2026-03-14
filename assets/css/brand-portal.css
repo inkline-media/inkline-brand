@@ -737,3 +737,19 @@ input[type="range"].brand-slider::-moz-range-track {
     gap: 0.5rem;
   }
 }
+
+
+/* --------------------------------------------------------------------------
+   18. Skip Intro Button - Bounce Hint
+   -------------------------------------------------------------------------- */
+
+.animate-bounce-hint {
+  animation: bounce-hint 2s ease 1.5s 3;
+}
+
+@keyframes bounce-hint {
+  0%, 100% { transform: translateY(0); }
+  30%      { transform: translateY(-8px); }
+  50%      { transform: translateY(0); }
+  70%      { transform: translateY(-4px); }
+}
