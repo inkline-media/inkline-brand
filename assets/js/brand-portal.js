@@ -626,18 +626,26 @@
         });
       }
 
-      // Format selector — show/hide size input
+      // Format selector — show/hide size input + update button labels
       const formatSelect = document.getElementById('logo-format');
+      function updateDownloadLabels() {
+        const label = `Download ${activeFormat.toUpperCase()}`;
+        document.querySelectorAll('.logo-download[data-type]').forEach(btn => {
+          btn.textContent = label;
+        });
+      }
       if (formatSelect) {
         formatSelect.addEventListener('change', () => {
           activeFormat = formatSelect.value;
           if (sizeGroup) {
             sizeGroup.style.display = activeFormat === 'svg' ? 'none' : '';
           }
+          updateDownloadLabels();
         });
         // Initial state: hide size for SVG
         if (sizeGroup) sizeGroup.style.display = 'none';
       }
+      updateDownloadLabels();
 
       // Canvas toggle
       const canvasToggle = document.getElementById('logo-canvas-toggle');
@@ -654,6 +662,18 @@
         if (type) {
           btn.addEventListener('click', () => handleDownload(type));
         }
+      });
+
+      // Copy SVG URL buttons
+      document.querySelectorAll('.logo-copy-url[data-type]').forEach(btn => {
+        btn.addEventListener('click', () => {
+          const type = btn.dataset.type;
+          const relativePath = logoPath(type, activeColor, 'svg');
+          const absoluteUrl = new URL(relativePath, window.location.href).href;
+          navigator.clipboard.writeText(absoluteUrl).then(() => {
+            showToast('SVG URL copied!');
+          });
+        });
       });
 
       // App icon color picker (separate from logo color picker)

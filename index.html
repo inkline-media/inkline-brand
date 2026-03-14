@@ -237,7 +237,10 @@
           <div class="logo-preview flex items-center justify-center h-40 w-full" data-type="horizontal">
             <img src="logos/horizontal/cobalt/inkline-horizontal-cobalt.svg" alt="Horizontal Logo" class="max-h-full max-w-full object-contain">
           </div>
-          <button class="logo-download mt-4 w-full py-2 bg-nearly-black text-white text-sm rounded-lg hover:bg-nearly-black/80 transition-colors" data-type="horizontal">Download</button>
+          <div class="mt-4 w-full flex gap-2">
+            <button class="logo-download flex-1 py-2 bg-nearly-black text-white text-sm rounded-lg hover:bg-nearly-black/80 transition-colors" data-type="horizontal">Download</button>
+            <button class="logo-copy-url py-2 px-3 border border-light-grey text-sm rounded-lg hover:bg-light-grey/30 transition-colors" data-type="horizontal" title="Copy SVG URL">SVG URL</button>
+          </div>
         </div>
         <!-- Vertical -->
         <div class="bg-white rounded-2xl p-6 flex flex-col items-center">
@@ -245,7 +248,10 @@
           <div class="logo-preview flex items-center justify-center h-40 w-full" data-type="vertical">
             <img src="logos/vertical/cobalt/inkline-vertical-cobalt.svg" alt="Vertical Logo" class="max-h-full max-w-full object-contain">
           </div>
-          <button class="logo-download mt-4 w-full py-2 bg-nearly-black text-white text-sm rounded-lg hover:bg-nearly-black/80 transition-colors" data-type="vertical">Download</button>
+          <div class="mt-4 w-full flex gap-2">
+            <button class="logo-download flex-1 py-2 bg-nearly-black text-white text-sm rounded-lg hover:bg-nearly-black/80 transition-colors" data-type="vertical">Download</button>
+            <button class="logo-copy-url py-2 px-3 border border-light-grey text-sm rounded-lg hover:bg-light-grey/30 transition-colors" data-type="vertical" title="Copy SVG URL">SVG URL</button>
+          </div>
         </div>
         <!-- Wordmark -->
         <div class="bg-white rounded-2xl p-6 flex flex-col items-center">
@@ -253,7 +259,10 @@
           <div class="logo-preview flex items-center justify-center h-40 w-full" data-type="wordmark">
             <img src="logos/wordmark/cobalt/inkline-wordmark-cobalt.svg" alt="Wordmark Logo" class="max-h-full max-w-full object-contain">
           </div>
-          <button class="logo-download mt-4 w-full py-2 bg-nearly-black text-white text-sm rounded-lg hover:bg-nearly-black/80 transition-colors" data-type="wordmark">Download</button>
+          <div class="mt-4 w-full flex gap-2">
+            <button class="logo-download flex-1 py-2 bg-nearly-black text-white text-sm rounded-lg hover:bg-nearly-black/80 transition-colors" data-type="wordmark">Download</button>
+            <button class="logo-copy-url py-2 px-3 border border-light-grey text-sm rounded-lg hover:bg-light-grey/30 transition-colors" data-type="wordmark" title="Copy SVG URL">SVG URL</button>
+          </div>
         </div>
         <!-- Logomark -->
         <div class="bg-white rounded-2xl p-6 flex flex-col items-center">
@@ -261,7 +270,10 @@
           <div class="logo-preview flex items-center justify-center h-40 w-full" data-type="logomark">
             <img src="logos/logomark/cobalt/inkline-logomark-cobalt.svg" alt="Logomark" class="max-h-full max-w-full object-contain">
           </div>
-          <button class="logo-download mt-4 w-full py-2 bg-nearly-black text-white text-sm rounded-lg hover:bg-nearly-black/80 transition-colors" data-type="logomark">Download</button>
+          <div class="mt-4 w-full flex gap-2">
+            <button class="logo-download flex-1 py-2 bg-nearly-black text-white text-sm rounded-lg hover:bg-nearly-black/80 transition-colors" data-type="logomark">Download</button>
+            <button class="logo-copy-url py-2 px-3 border border-light-grey text-sm rounded-lg hover:bg-light-grey/30 transition-colors" data-type="logomark" title="Copy SVG URL">SVG URL</button>
+          </div>
         </div>
       </div>
 
@@ -740,32 +752,92 @@
       <div class="mb-12">
         <span class="text-medium-grey text-sm font-medium">6.0</span>
         <h2 class="text-4xl md:text-6xl font-bold mt-1">Brand in Use</h2>
-        <p class="text-medium-grey mt-4 max-w-xl">See the Inkline brand applied across business cards, merchandise, signage, and more. Refer to the full brand guide above for detailed examples.</p>
+        <p class="text-medium-grey mt-4 max-w-xl">The Inkline brand applied across business cards, merchandise, signage, and more.</p>
       </div>
-      <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
-        <div class="bg-light-grey/50 rounded-2xl p-8 flex flex-col items-center justify-center text-center min-h-[200px]">
-          <img src="logos/horizontal/cobalt/inkline-horizontal-cobalt.svg" alt="Horizontal Cobalt" class="h-10 mb-4">
-          <p class="text-sm text-medium-grey">Business Cards</p>
+
+      <!-- Row 1: Business Cards hero -->
+      <div class="grid lg:grid-cols-3 gap-4 mb-4">
+        <div class="lg:col-span-2 group relative rounded-2xl overflow-hidden">
+          <img src="brand-in-use-images/inkline-business-cards-team-lineup.jpg" alt="Inkline business cards showing team members in cerulean, white, lime and cobalt" class="w-full h-64 sm:h-80 lg:h-96 object-cover" loading="lazy" decoding="async">
+          <div class="absolute bottom-0 inset-x-0 bg-gradient-to-t from-black/60 to-transparent p-5">
+            <p class="text-white font-semibold text-sm">Business Cards</p>
+            <p class="text-white/60 text-xs mt-0.5">Team lineup across brand colors</p>
+          </div>
         </div>
-        <div class="bg-nearly-black rounded-2xl p-8 flex flex-col items-center justify-center text-center min-h-[200px]">
-          <img src="logos/vertical/white/inkline-vertical-white.svg" alt="Vertical White" class="h-24 mb-4">
-          <p class="text-sm text-white/50">Signage</p>
+        <div class="group relative rounded-2xl overflow-hidden">
+          <img src="brand-in-use-images/inkline-business-cards-stacked-mockup.jpg" alt="Stacked Inkline business cards in cerulean, magenta and cobalt" class="w-full h-64 sm:h-80 lg:h-96 object-cover" loading="lazy" decoding="async">
+          <div class="absolute bottom-0 inset-x-0 bg-gradient-to-t from-black/60 to-transparent p-5">
+            <p class="text-white font-semibold text-sm">Business Cards</p>
+            <p class="text-white/60 text-xs mt-0.5">Stacked color variants</p>
+          </div>
         </div>
-        <div class="rounded-2xl p-8 flex flex-col items-center justify-center text-center min-h-[200px]" style="background:#1399CC">
-          <img src="logos/logomark/white/inkline-logomark-white.svg" alt="Logomark White" class="h-20 mb-4">
-          <p class="text-sm text-white/70">Merchandise</p>
+      </div>
+
+      <!-- Row 2: Merch mix -->
+      <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-4 mb-4">
+        <div class="group relative rounded-2xl overflow-hidden">
+          <img src="brand-in-use-images/inkline-branded-tshirt.jpg" alt="White t-shirt with Inkline cerulean logomark" class="w-full h-64 sm:h-72 object-cover" loading="lazy" decoding="async">
+          <div class="absolute bottom-0 inset-x-0 bg-gradient-to-t from-black/60 to-transparent p-5">
+            <p class="text-white font-semibold text-sm">T-Shirt</p>
+            <p class="text-white/60 text-xs mt-0.5">Logomark on white tee</p>
+          </div>
         </div>
-        <div class="rounded-2xl p-8 flex flex-col items-center justify-center text-center min-h-[200px]" style="background:#C5E600">
-          <img src="logos/horizontal/black/inkline-horizontal-black.svg" alt="Horizontal Black on Lime" class="h-10 mb-4">
-          <p class="text-sm text-nearly-black/60">Print Materials</p>
+        <div class="group relative rounded-2xl overflow-hidden">
+          <img src="brand-in-use-images/inkline-cap-cache-rules-everything.jpg" alt="White cap with 'cache rules everything' and Inkline logomark" class="w-full h-64 sm:h-72 object-cover" loading="lazy" decoding="async">
+          <div class="absolute bottom-0 inset-x-0 bg-gradient-to-t from-black/60 to-transparent p-5">
+            <p class="text-white font-semibold text-sm">Cap</p>
+            <p class="text-white/60 text-xs mt-0.5">"cache rules everything"</p>
+          </div>
         </div>
-        <div class="rounded-2xl p-8 flex flex-col items-center justify-center text-center min-h-[200px]" style="background:#E10098">
-          <img src="logos/wordmark/white/inkline-wordmark-white.svg" alt="Wordmark White" class="h-8 mb-4">
-          <p class="text-sm text-white/70">Digital Campaigns</p>
+        <div class="group relative rounded-2xl overflow-hidden sm:col-span-2 lg:col-span-1">
+          <img src="brand-in-use-images/inkline-tote-bag-class-in-body.jpg" alt="Canvas tote bag with 'We put the class in your body' text" class="w-full h-64 sm:h-72 object-cover object-top" loading="lazy" decoding="async">
+          <div class="absolute bottom-0 inset-x-0 bg-gradient-to-t from-black/60 to-transparent p-5">
+            <p class="text-white font-semibold text-sm">Tote Bag</p>
+            <p class="text-white/60 text-xs mt-0.5">"We put the class in your &lt;body&gt;"</p>
+          </div>
         </div>
-        <div class="bg-white border border-light-grey rounded-2xl p-8 flex flex-col items-center justify-center text-center min-h-[200px]">
-          <img src="logos/vertical/cerulean/inkline-vertical-cerulean.svg" alt="Vertical Cerulean" class="h-24 mb-4">
-          <p class="text-sm text-medium-grey">Presentations</p>
+      </div>
+
+      <!-- Row 3: Office & Accessories -->
+      <div class="grid lg:grid-cols-3 gap-4 mb-4">
+        <div class="lg:col-span-2 group relative rounded-2xl overflow-hidden">
+          <img src="brand-in-use-images/inkline-hanging-office-sign.jpg" alt="Inkline hanging office sign showing Suite 202" class="w-full h-56 sm:h-72 object-cover" loading="lazy" decoding="async">
+          <div class="absolute bottom-0 inset-x-0 bg-gradient-to-t from-black/60 to-transparent p-5">
+            <p class="text-white font-semibold text-sm">Office Signage</p>
+            <p class="text-white/60 text-xs mt-0.5">Hanging sign with horizontal logo</p>
+          </div>
+        </div>
+        <div class="group relative rounded-2xl overflow-hidden">
+          <img src="brand-in-use-images/inkline-branded-keychains.jpg" alt="Inkline branded keychains in grey, cerulean, lime and bubblegum" class="w-full h-56 sm:h-72 object-cover" loading="lazy" decoding="async">
+          <div class="absolute bottom-0 inset-x-0 bg-gradient-to-t from-black/60 to-transparent p-5">
+            <p class="text-white font-semibold text-sm">Keychains</p>
+            <p class="text-white/60 text-xs mt-0.5">Multi-color carabiner set</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Row 4: Bottom mix -->
+      <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
+        <div class="group relative rounded-2xl overflow-hidden">
+          <img src="brand-in-use-images/inkline-branded-notebook.jpg" alt="Inkline branded notebook with black logomark and cerulean band" class="w-full h-64 sm:h-72 object-cover" loading="lazy" decoding="async">
+          <div class="absolute bottom-0 inset-x-0 bg-gradient-to-t from-black/60 to-transparent p-5">
+            <p class="text-white font-semibold text-sm">Notebook</p>
+            <p class="text-white/60 text-xs mt-0.5">Dotted journal with logomark</p>
+          </div>
+        </div>
+        <div class="group relative rounded-2xl overflow-hidden">
+          <img src="brand-in-use-images/inkline-branded-mousepad-make-it-pop.jpg" alt="Inkline branded mousepad with 'Make it pop' text" class="w-full h-64 sm:h-72 object-cover" loading="lazy" decoding="async">
+          <div class="absolute bottom-0 inset-x-0 bg-gradient-to-t from-black/60 to-transparent p-5">
+            <p class="text-white font-semibold text-sm">Mousepad</p>
+            <p class="text-white/60 text-xs mt-0.5">"Make it pop."</p>
+          </div>
+        </div>
+        <div class="group relative rounded-2xl overflow-hidden sm:col-span-2 lg:col-span-1">
+          <img src="brand-in-use-images/inkline-branded-water-bottles.jpg" alt="Inkline branded metal water bottles" class="w-full h-64 sm:h-72 object-cover object-top" loading="lazy" decoding="async">
+          <div class="absolute bottom-0 inset-x-0 bg-gradient-to-t from-black/60 to-transparent p-5">
+            <p class="text-white font-semibold text-sm">Water Bottles</p>
+            <p class="text-white/60 text-xs mt-0.5">Brushed metal with wordmark</p>
+          </div>
         </div>
       </div>
     </div>

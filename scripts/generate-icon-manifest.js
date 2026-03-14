@@ -1,169 +1,33 @@
 const fs = require('fs');
 const path = require('path');
+const https = require('https');
 
-const ALIASES = {
-  'house': ['home', 'main', 'start', 'homepage'],
-  'magnifying-glass': ['search', 'find', 'zoom', 'lookup', 'query'],
-  'magnifying-glass-plus': ['zoom-in', 'search-plus'],
-  'magnifying-glass-minus': ['zoom-out', 'search-minus'],
-  'envelope': ['email', 'mail', 'message', 'letter', 'inbox'],
-  'phone': ['call', 'telephone', 'contact', 'dial'],
-  'gear': ['settings', 'config', 'preferences', 'cog', 'options'],
-  'gears': ['settings', 'config', 'preferences', 'cogs'],
-  'user': ['person', 'profile', 'account', 'avatar', 'member'],
-  'users': ['people', 'group', 'team', 'members'],
-  'heart': ['love', 'like', 'favorite', 'fav'],
-  'star': ['rating', 'favorite', 'bookmark', 'featured'],
-  'check': ['checkmark', 'done', 'complete', 'success', 'tick', 'confirm'],
-  'xmark': ['close', 'remove', 'delete', 'cancel', 'x', 'dismiss'],
-  'plus': ['add', 'new', 'create', 'insert'],
-  'minus': ['subtract', 'remove', 'decrease'],
-  'trash': ['delete', 'remove', 'bin', 'garbage', 'discard'],
-  'trash-can': ['delete', 'remove', 'bin', 'garbage'],
-  'pen': ['edit', 'write', 'modify', 'pencil', 'update'],
-  'pencil': ['edit', 'write', 'modify', 'update'],
-  'pen-to-square': ['edit', 'modify', 'update', 'compose'],
-  'copy': ['duplicate', 'clone', 'clipboard'],
-  'clipboard': ['paste', 'copy', 'board'],
-  'download': ['save', 'export', 'get'],
-  'upload': ['import', 'send', 'share'],
-  'image': ['photo', 'picture', 'img', 'gallery'],
-  'images': ['photos', 'pictures', 'gallery'],
-  'camera': ['photo', 'picture', 'snapshot', 'photography'],
-  'video': ['movie', 'film', 'clip', 'media'],
-  'file': ['document', 'doc', 'page'],
-  'folder': ['directory', 'dir', 'collection'],
-  'folder-open': ['directory', 'browse', 'explore'],
-  'lock': ['secure', 'locked', 'private', 'password', 'security'],
-  'unlock': ['open', 'unsecure', 'public'],
-  'key': ['password', 'access', 'auth', 'security'],
-  'shield': ['security', 'protect', 'safe', 'defense'],
-  'bell': ['notification', 'alert', 'alarm', 'notify', 'ring'],
-  'calendar': ['date', 'schedule', 'event', 'planner'],
-  'clock': ['time', 'schedule', 'hour', 'timer', 'watch'],
-  'map': ['location', 'directions', 'navigate', 'geography'],
-  'location-dot': ['map', 'pin', 'place', 'marker', 'gps', 'address'],
-  'globe': ['world', 'earth', 'international', 'web', 'internet'],
-  'link': ['url', 'chain', 'hyperlink', 'connection'],
-  'share': ['social', 'forward', 'send', 'distribute'],
-  'share-nodes': ['social', 'network', 'connect', 'share'],
-  'comment': ['chat', 'message', 'talk', 'bubble', 'conversation'],
-  'comments': ['chat', 'messages', 'discuss', 'conversation', 'forum'],
-  'circle-info': ['information', 'help', 'about', 'details', 'info'],
-  'circle-question': ['help', 'faq', 'support', 'question'],
-  'circle-exclamation': ['warning', 'alert', 'caution', 'important'],
-  'circle-check': ['success', 'complete', 'verified', 'approved', 'done'],
-  'circle-xmark': ['error', 'failed', 'close', 'remove', 'cancel'],
-  'triangle-exclamation': ['warning', 'alert', 'caution', 'danger', 'error'],
-  'cart-shopping': ['cart', 'shop', 'buy', 'purchase', 'ecommerce', 'basket'],
-  'credit-card': ['payment', 'pay', 'card', 'billing', 'purchase'],
-  'money-bill': ['cash', 'payment', 'dollar', 'finance', 'currency'],
-  'chart-bar': ['graph', 'analytics', 'statistics', 'data', 'report'],
-  'chart-line': ['graph', 'analytics', 'trend', 'data', 'statistics'],
-  'chart-pie': ['graph', 'analytics', 'data', 'statistics', 'donut'],
-  'database': ['storage', 'data', 'server', 'db'],
-  'server': ['hosting', 'backend', 'infrastructure', 'computer'],
-  'code': ['programming', 'develop', 'html', 'brackets', 'source'],
-  'terminal': ['command', 'console', 'cli', 'shell', 'prompt'],
-  'bug': ['error', 'debug', 'issue', 'problem', 'defect'],
-  'palette': ['color', 'design', 'art', 'paint', 'creative'],
-  'paintbrush': ['design', 'art', 'draw', 'creative', 'paint'],
-  'eye': ['view', 'see', 'watch', 'visible', 'show', 'preview'],
-  'eye-slash': ['hide', 'invisible', 'hidden', 'private'],
-  'print': ['printer', 'paper', 'output', 'document'],
-  'filter': ['sort', 'funnel', 'refine', 'narrow'],
-  'sort': ['order', 'arrange', 'organize', 'rank'],
-  'arrows-rotate': ['refresh', 'reload', 'sync', 'update', 'rotate'],
-  'rotate': ['spin', 'turn', 'refresh', 'cycle'],
-  'spinner': ['loading', 'wait', 'progress', 'busy'],
-  'circle-notch': ['loading', 'spinner', 'wait', 'progress'],
-  'bars': ['menu', 'hamburger', 'navigation', 'nav', 'sidebar'],
-  'ellipsis': ['more', 'options', 'dots', 'menu', 'actions'],
-  'ellipsis-vertical': ['more', 'options', 'dots', 'menu', 'kebab'],
-  'grip': ['drag', 'handle', 'move', 'reorder'],
-  'arrow-right': ['next', 'forward', 'continue', 'go'],
-  'arrow-left': ['back', 'previous', 'return'],
-  'arrow-up': ['up', 'increase', 'rise'],
-  'arrow-down': ['down', 'decrease', 'drop'],
-  'chevron-right': ['next', 'forward', 'expand', 'collapse'],
-  'chevron-left': ['back', 'previous', 'collapse'],
-  'chevron-up': ['up', 'collapse', 'less'],
-  'chevron-down': ['down', 'expand', 'more', 'dropdown'],
-  'angles-right': ['forward', 'skip', 'fast-forward', 'last'],
-  'angles-left': ['backward', 'rewind', 'first'],
-  'play': ['start', 'begin', 'media', 'video', 'audio'],
-  'pause': ['stop', 'hold', 'wait', 'media'],
-  'stop': ['end', 'halt', 'media'],
-  'forward': ['next', 'skip', 'fast-forward'],
-  'backward': ['previous', 'rewind'],
-  'volume-high': ['sound', 'audio', 'speaker', 'loud'],
-  'volume-low': ['sound', 'audio', 'speaker', 'quiet'],
-  'volume-xmark': ['mute', 'silent', 'no-sound'],
-  'microphone': ['mic', 'record', 'audio', 'voice', 'speak'],
-  'headphones': ['audio', 'music', 'listen', 'earphones'],
-  'music': ['audio', 'song', 'note', 'sound'],
-  'wifi': ['wireless', 'internet', 'signal', 'network', 'connection'],
-  'bluetooth': ['wireless', 'connect', 'pair'],
-  'battery-full': ['power', 'charge', 'energy'],
-  'plug': ['power', 'connect', 'electricity', 'charge'],
-  'bolt': ['lightning', 'power', 'energy', 'flash', 'electric'],
-  'fire': ['hot', 'flame', 'trending', 'popular', 'burn'],
-  'sun': ['bright', 'light', 'day', 'weather', 'theme'],
-  'moon': ['dark', 'night', 'theme', 'sleep'],
-  'cloud': ['weather', 'storage', 'upload', 'sky', 'hosting'],
-  'snowflake': ['cold', 'winter', 'freeze', 'ice'],
-  'droplet': ['water', 'rain', 'liquid', 'color'],
-  'leaf': ['nature', 'eco', 'green', 'plant', 'organic'],
-  'tree': ['nature', 'forest', 'plant', 'environment'],
-  'mountain': ['landscape', 'nature', 'peak', 'outdoor'],
-  'building': ['office', 'company', 'business', 'corporate', 'organization'],
-  'hospital': ['medical', 'health', 'clinic', 'emergency'],
-  'graduation-cap': ['education', 'school', 'university', 'learn', 'academic'],
-  'book': ['read', 'education', 'library', 'learn', 'manual'],
-  'newspaper': ['news', 'article', 'blog', 'press', 'media'],
-  'bullhorn': ['announce', 'marketing', 'megaphone', 'promote', 'broadcast'],
-  'flag': ['report', 'mark', 'country', 'banner', 'milestone'],
-  'trophy': ['award', 'winner', 'achievement', 'prize', 'success'],
-  'medal': ['award', 'achievement', 'badge', 'prize'],
-  'gift': ['present', 'reward', 'surprise', 'bonus'],
-  'puzzle-piece': ['plugin', 'extension', 'integration', 'addon', 'module'],
-  'lightbulb': ['idea', 'tip', 'hint', 'innovation', 'creative'],
-  'rocket': ['launch', 'startup', 'fast', 'boost', 'deploy'],
-  'paper-plane': ['send', 'message', 'submit', 'email', 'telegram'],
-  'thumbs-up': ['like', 'approve', 'good', 'positive', 'agree'],
-  'thumbs-down': ['dislike', 'disapprove', 'bad', 'negative', 'disagree'],
-  'handshake': ['partnership', 'deal', 'agreement', 'collaborate'],
-  'quote-left': ['quote', 'blockquote', 'citation', 'testimonial'],
-  'table': ['grid', 'spreadsheet', 'data', 'rows', 'columns'],
-  'list': ['bullets', 'items', 'menu', 'todo'],
-  'tag': ['label', 'price', 'category', 'badge'],
-  'tags': ['labels', 'categories', 'keywords'],
-  'bookmark': ['save', 'favorite', 'mark', 'flag'],
-  'at': ['email', 'mention', 'address'],
-  'hashtag': ['tag', 'number', 'pound', 'topic', 'trending'],
-  'percent': ['discount', 'sale', 'percentage', 'ratio'],
-  'qrcode': ['scan', 'barcode', 'code', 'link'],
-  'barcode': ['scan', 'product', 'code', 'upc'],
-  'fingerprint': ['identity', 'biometric', 'security', 'auth'],
-  'desktop': ['computer', 'monitor', 'screen', 'pc', 'display'],
-  'laptop': ['computer', 'notebook', 'portable', 'device'],
-  'mobile': ['phone', 'smartphone', 'device', 'cell'],
-  'tablet': ['ipad', 'device', 'screen'],
-  'keyboard': ['type', 'input', 'keys', 'shortcut'],
-  'mouse': ['click', 'pointer', 'cursor', 'input'],
-  'hard-drive': ['storage', 'disk', 'drive', 'hdd', 'ssd'],
-  'microchip': ['cpu', 'processor', 'chip', 'hardware', 'tech'],
-  'robot': ['bot', 'ai', 'automation', 'machine'],
-  'wand-magic-sparkles': ['magic', 'auto', 'generate', 'ai', 'wizard'],
-  'screwdriver-wrench': ['tools', 'settings', 'repair', 'fix', 'configure'],
-  'hammer': ['build', 'construct', 'tool', 'fix'],
-  'crop': ['resize', 'trim', 'cut', 'adjust'],
-  'scissors': ['cut', 'trim', 'clip', 'snip'],
-  'expand': ['fullscreen', 'maximize', 'enlarge', 'resize'],
-  'compress': ['minimize', 'shrink', 'reduce', 'resize'],
-  'maximize': ['fullscreen', 'expand', 'enlarge'],
-  'minimize': ['reduce', 'shrink', 'collapse'],
-};
+/**
+ * Fetch FontAwesome's official icon metadata from their public GitHub repo.
+ * This contains search terms, aliases, labels, and categories for every icon —
+ * the same data that powers fontawesome.com search. No API key needed.
+ */
+function fetchFAMetadata() {
+  const url = 'https://raw.githubusercontent.com/FortAwesome/Font-Awesome/6.x/metadata/icons.json';
+  return new Promise((resolve, reject) => {
+    console.log('Fetching FontAwesome metadata from GitHub...');
+    https.get(url, res => {
+      if (res.statusCode !== 200) {
+        reject(new Error(`HTTP ${res.statusCode}`));
+        return;
+      }
+      let data = '';
+      res.on('data', chunk => { data += chunk; });
+      res.on('end', () => {
+        try {
+          const parsed = JSON.parse(data);
+          console.log(`  Loaded metadata for ${Object.keys(parsed).length} icons`);
+          resolve(parsed);
+        } catch (e) { reject(e); }
+      });
+    }).on('error', reject);
+  });
+}
 
 const collections = [
   { name: 'solid',   dir: 'icons/fontawesome-classic-solid',   prefix: 'fas' },
@@ -173,27 +37,65 @@ const collections = [
   { name: 'brands',  dir: 'icons/fontawesome-classic-brands',  prefix: 'fab' }
 ];
 
-const manifest = [];
-
-for (const col of collections) {
-  const dir = path.join(__dirname, '..', col.dir);
-  const files = fs.readdirSync(dir).filter(f => f.endsWith('.svg'));
-  for (const file of files) {
-    const name = file.replace('.svg', '');
-    const terms = name.split('-').filter(t => t.length > 0);
-    const aliases = ALIASES[name] || [];
-    const allTags = [...new Set([...terms, ...aliases])];
-    manifest.push({
-      n: name,
-      c: col.name,
-      f: `${col.dir}/${file}`,
-      t: allTags
-    });
+async function main() {
+  // Fetch official FA metadata (search terms + aliases)
+  let faMeta = {};
+  try {
+    faMeta = await fetchFAMetadata();
+  } catch (err) {
+    console.warn('  Warning: Could not fetch FA metadata, falling back to filename-only tags');
+    console.warn(' ', err.message);
   }
-  console.log(`Processed ${files.length} icons from ${col.name}`);
+
+  const manifest = [];
+
+  for (const col of collections) {
+    const dir = path.join(__dirname, '..', col.dir);
+    const files = fs.readdirSync(dir).filter(f => f.endsWith('.svg'));
+    for (const file of files) {
+      const name = file.replace('.svg', '');
+
+      // Start with filename-derived terms
+      const fileTerms = name.split('-').filter(t => t.length > 0);
+
+      // Merge in official FA metadata if available
+      const meta = faMeta[name];
+      const searchTerms = meta?.search?.terms || [];
+      const label = meta?.label ? meta.label.toLowerCase().split(/\s+/) : [];
+      const aliasNames = meta?.aliases?.names || [];
+
+      // Combine all tags, deduplicated
+      const allTags = [...new Set([
+        ...fileTerms,
+        ...searchTerms.map(t => t.toLowerCase()),
+        ...label,
+        ...aliasNames
+      ])];
+
+      manifest.push({
+        n: name,
+        c: col.name,
+        f: `${col.dir}/${file}`,
+        t: allTags
+      });
+    }
+    console.log(`Processed ${files.length} icons from ${col.name}`);
+  }
+
+  const outPath = path.join(__dirname, '..', 'assets', 'js', 'icon-manifest.json');
+  fs.writeFileSync(outPath, JSON.stringify(manifest));
+  const stats = fs.statSync(outPath);
+  console.log(`\nTotal: ${manifest.length} icons indexed (${(stats.size / 1024).toFixed(0)}KB)`);
+
+  // Show some examples of enriched tags
+  const examples = ['house', 'magnifying-glass', 'cart-shopping', 'envelope'];
+  console.log('\nSample enriched tags:');
+  for (const ex of examples) {
+    const entry = manifest.find(m => m.n === ex && m.c === 'solid');
+    if (entry) {
+      console.log(`  ${ex}: [${entry.t.join(', ')}]`);
+    }
+  }
 }
 
-const outPath = path.join(__dirname, '..', 'assets', 'js', 'icon-manifest.json');
-fs.writeFileSync(outPath, JSON.stringify(manifest));
-const stats = fs.statSync(outPath);
-console.log(`Total: ${manifest.length} icons indexed (${(stats.size / 1024).toFixed(0)}KB)`);
+main();
