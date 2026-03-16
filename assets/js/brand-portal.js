@@ -762,7 +762,7 @@
 
   const ColorSection = (() => {
     function init() {
-      const swatches = document.querySelectorAll('[data-hex]');
+      const swatches = document.querySelectorAll('[data-hex]:not(#mobile-palette-tooltip [data-hex])');
       if (!swatches.length) return;
 
       swatches.forEach(swatch => {
