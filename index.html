@@ -66,9 +66,28 @@
         <a href="#imagery" class="nav-link text-sm text-white/70 hover:text-white transition-colors">Imagery</a>
         <button id="open-brand-book" class="px-4 py-1.5 bg-cerulean text-white text-sm font-medium rounded-lg hover:bg-cobalt transition-colors">View Brand Book</button>
       </div>
-      <button id="nav-toggle" class="md:hidden text-white p-2" aria-label="Toggle menu">
-        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/></svg>
-      </button>
+      <div class="md:hidden flex items-center gap-2">
+        <div class="relative" id="mobile-palette-wrap">
+          <button id="mobile-palette-btn" class="text-white/70 hover:text-white text-xs font-medium px-2.5 py-1 border border-white/20 rounded-full transition-colors" aria-label="Brand Colors">Colors</button>
+          <div id="mobile-palette-tooltip" class="absolute top-full right-0 mt-2 bg-nearly-black/95 backdrop-blur border border-white/20 rounded-xl p-3 opacity-0 pointer-events-none transition-opacity duration-200 z-50">
+            <div class="grid grid-cols-5 gap-2.5">
+              <button data-hex="#0057B8" class="w-7 h-7 rounded-sm active:scale-90 transition-transform" style="background:#0057B8" title="Cobalt #0057B8"></button>
+              <button data-hex="#1399CC" class="w-7 h-7 rounded-sm active:scale-90 transition-transform" style="background:#1399CC" title="Cerulean #1399CC"></button>
+              <button data-hex="#E10098" class="w-7 h-7 rounded-sm active:scale-90 transition-transform" style="background:#E10098" title="Magenta #E10098"></button>
+              <button data-hex="#FF66C9" class="w-7 h-7 rounded-sm active:scale-90 transition-transform" style="background:#FF66C9" title="Bubblegum #FF66C9"></button>
+              <button data-hex="#34AE17" class="w-7 h-7 rounded-sm active:scale-90 transition-transform" style="background:#34AE17" title="Shamrock #34AE17"></button>
+              <button data-hex="#C5E600" class="w-7 h-7 rounded-sm active:scale-90 transition-transform" style="background:#C5E600" title="Lime #C5E600"></button>
+              <button data-hex="#101010" class="w-7 h-7 rounded-sm active:scale-90 transition-transform border border-white/20" style="background:#101010" title="Nearly Black #101010"></button>
+              <button data-hex="#8E8E8E" class="w-7 h-7 rounded-sm active:scale-90 transition-transform" style="background:#8E8E8E" title="Medium Grey #8E8E8E"></button>
+              <button data-hex="#D3D3D6" class="w-7 h-7 rounded-sm active:scale-90 transition-transform" style="background:#D3D3D6" title="Light Grey #D3D3D6"></button>
+              <button data-hex="#FFFFFF" class="w-7 h-7 rounded-sm active:scale-90 transition-transform border border-white/30" style="background:#FFFFFF" title="White #FFFFFF"></button>
+            </div>
+          </div>
+        </div>
+        <button id="nav-toggle" class="text-white p-2" aria-label="Toggle menu">
+          <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/></svg>
+        </button>
+      </div>
     </div>
     <!-- Mobile menu -->
     <div id="mobile-menu" class="md:hidden hidden bg-nearly-black border-t border-white/10">

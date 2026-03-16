@@ -219,6 +219,39 @@
       window.addEventListener('scroll', debounce(updateActiveLink, 50), { passive: true });
       updateActiveLink();
 
+      // Mobile color palette tooltip
+      const paletteBtn = document.getElementById('mobile-palette-btn');
+      const paletteTip = document.getElementById('mobile-palette-tooltip');
+      if (paletteBtn && paletteTip) {
+        let paletteTimer = null;
+        const closePalette = () => {
+          paletteTip.classList.add('opacity-0', 'pointer-events-none');
+          paletteTip.classList.remove('opacity-100', 'pointer-events-auto');
+          clearTimeout(paletteTimer);
+        };
+        const openPalette = () => {
+          paletteTip.classList.remove('opacity-0', 'pointer-events-none');
+          paletteTip.classList.add('opacity-100', 'pointer-events-auto');
+          clearTimeout(paletteTimer);
+          paletteTimer = setTimeout(closePalette, 5000);
+        };
+        paletteBtn.addEventListener('click', e => {
+          e.stopPropagation();
+          const isOpen = paletteTip.classList.contains('opacity-100');
+          isOpen ? closePalette() : openPalette();
+        });
+        paletteTip.querySelectorAll('[data-hex]').forEach(sw => {
+          sw.addEventListener('click', e => {
+            e.stopPropagation();
+            copyToClipboard(sw.dataset.hex);
+            closePalette();
+          });
+        });
+        document.addEventListener('click', e => {
+          if (!paletteTip.contains(e.target) && e.target !== paletteBtn) closePalette();
+        });
+      }
+
       // Back to top button — show once scrolled past the hero
       const backToTop = document.getElementById('back-to-top');
       if (backToTop) {
