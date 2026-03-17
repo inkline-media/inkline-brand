@@ -555,9 +555,22 @@
           <div class="md:w-2/3">
             <div class="flex flex-wrap items-center gap-4 mb-4">
               <div class="flex items-center gap-2">
-                <input type="range" class="brand-slider w-32" min="12" max="120" value="32" data-target="font-inter-tight">
-                <span class="font-size-display text-sm text-medium-grey w-12">32px</span>
+                <label class="text-xs text-medium-grey">Size</label>
+                <input type="range" class="brand-slider w-32 font-size-slider" min="12" max="120" value="32" data-target="font-inter-tight">
+                <span class="font-size-display text-sm text-medium-grey w-14">2em</span>
               </div>
+              <div class="flex items-center gap-2">
+                <label class="text-xs text-medium-grey">Line Height</label>
+                <input type="range" class="brand-slider w-24 line-height-slider" min="0.8" max="3" step="0.1" value="1.3">
+                <span class="line-height-display text-sm text-medium-grey w-14">1.3em</span>
+              </div>
+              <div class="flex items-center gap-1.5">
+                <label class="text-xs text-medium-grey">Base</label>
+                <input type="number" class="base-font-size w-14 px-2 py-1 text-xs border border-light-grey rounded-lg text-center" min="8" max="32" value="16">
+                <span class="text-xs text-medium-grey">px</span>
+              </div>
+            </div>
+            <div class="flex flex-wrap items-center gap-4 mb-4">
               <div class="flex flex-wrap gap-1">
                 <button data-weight="300" class="px-3 py-1 text-xs rounded-full border border-light-grey hover:border-cerulean hover:text-cerulean transition-colors">Light</button>
                 <button data-weight="400" class="px-3 py-1 text-xs rounded-full border border-cerulean text-cerulean bg-cerulean/5">Regular</button>
@@ -567,7 +580,7 @@
               </div>
               <button data-style="italic" class="px-3 py-1 text-xs rounded-full border border-light-grey hover:border-cerulean hover:text-cerulean transition-colors italic">Italic</button>
             </div>
-            <div class="font-specimen font-inter-tight text-3xl leading-relaxed p-4 border border-light-grey rounded-xl min-h-[100px] focus-within:border-cerulean transition-colors" contenteditable="true" data-placeholder="Type something...">The quick brown fox jumps over the lazy dog</div>
+            <div class="font-specimen font-inter-tight text-3xl p-4 border border-light-grey rounded-xl min-h-[100px] focus-within:border-cerulean transition-colors" contenteditable="true" data-placeholder="Type something...">The quick brown fox jumps over the lazy dog</div>
             <div class="mt-4 relative">
               <div class="flex items-center justify-between mb-2">
                 <label class="text-xs font-medium text-medium-grey uppercase tracking-wider">CSS</label>
@@ -590,9 +603,22 @@
           <div class="md:w-2/3">
             <div class="flex flex-wrap items-center gap-4 mb-4">
               <div class="flex items-center gap-2">
-                <input type="range" class="brand-slider w-32" min="12" max="120" value="32" data-target="font-ibm-plex">
-                <span class="font-size-display text-sm text-medium-grey w-12">32px</span>
+                <label class="text-xs text-medium-grey">Size</label>
+                <input type="range" class="brand-slider w-32 font-size-slider" min="12" max="120" value="32" data-target="font-ibm-plex">
+                <span class="font-size-display text-sm text-medium-grey w-14">2em</span>
               </div>
+              <div class="flex items-center gap-2">
+                <label class="text-xs text-medium-grey">Line Height</label>
+                <input type="range" class="brand-slider w-24 line-height-slider" min="0.8" max="3" step="0.1" value="1.3">
+                <span class="line-height-display text-sm text-medium-grey w-14">1.3em</span>
+              </div>
+              <div class="flex items-center gap-1.5">
+                <label class="text-xs text-medium-grey">Base</label>
+                <input type="number" class="base-font-size w-14 px-2 py-1 text-xs border border-light-grey rounded-lg text-center" min="8" max="32" value="16">
+                <span class="text-xs text-medium-grey">px</span>
+              </div>
+            </div>
+            <div class="flex flex-wrap items-center gap-4 mb-4">
               <div class="flex flex-wrap gap-1">
                 <button data-weight="300" class="px-3 py-1 text-xs rounded-full border border-light-grey hover:border-cerulean hover:text-cerulean transition-colors">Light</button>
                 <button data-weight="400" class="px-3 py-1 text-xs rounded-full border border-cerulean text-cerulean bg-cerulean/5">Regular</button>
@@ -602,7 +628,7 @@
               </div>
               <button data-style="italic" class="px-3 py-1 text-xs rounded-full border border-light-grey hover:border-cerulean hover:text-cerulean transition-colors italic">Italic</button>
             </div>
-            <div class="font-specimen font-ibm-plex text-3xl leading-relaxed p-4 border border-light-grey rounded-xl min-h-[100px] focus-within:border-cerulean transition-colors" contenteditable="true" data-placeholder="Type something...">The quick brown fox jumps over the lazy dog</div>
+            <div class="font-specimen font-ibm-plex text-3xl p-4 border border-light-grey rounded-xl min-h-[100px] focus-within:border-cerulean transition-colors" contenteditable="true" data-placeholder="Type something...">The quick brown fox jumps over the lazy dog</div>
             <div class="mt-4 relative">
               <div class="flex items-center justify-between mb-2">
                 <label class="text-xs font-medium text-medium-grey uppercase tracking-wider">CSS</label>

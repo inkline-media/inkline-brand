@@ -794,8 +794,11 @@
       if (!panel) return;
 
       const specimen = panel.querySelector('.font-specimen, [contenteditable]');
-      const slider = panel.querySelector('input[type="range"], .brand-slider, .font-size-slider');
+      const sizeSlider = panel.querySelector('.font-size-slider');
       const sizeDisplay = panel.querySelector('.font-size-display');
+      const lineHeightSlider = panel.querySelector('.line-height-slider');
+      const lineHeightDisplay = panel.querySelector('.line-height-display');
+      const baseFontInput = panel.querySelector('.base-font-size');
       const weightButtons = panel.querySelectorAll('[data-weight]');
       const styleButtons = panel.querySelectorAll('[data-style]');
       const cssOutput = panel.querySelector('.font-css-output');
@@ -804,14 +807,31 @@
       const fallback = cfg.family.includes('Serif') ? 'serif' : 'sans-serif';
 
       // Current state
-      const state = { size: 32, weight: 400, style: 'normal' };
+      const state = { size: 32, weight: 400, style: 'normal', baseFontSize: 16, lineHeight: 1.3 };
+
+      function emValue() {
+        const v = state.size / state.baseFontSize;
+        return parseFloat(v.toFixed(2));
+      }
+
+      function updateSpecimen() {
+        if (!specimen) return;
+        specimen.style.fontSize = emValue() + 'em';
+        specimen.style.lineHeight = state.lineHeight + 'em';
+      }
+
+      function updateDisplays() {
+        if (sizeDisplay) sizeDisplay.textContent = emValue() + 'em';
+        if (lineHeightDisplay) lineHeightDisplay.textContent = state.lineHeight + 'em';
+      }
 
       function updateCSSOutput() {
         if (!cssOutput) return;
         const lines = [
           `font-family: "${cfg.family}", ${fallback};`,
-          `font-size: ${state.size}px;`,
-          `font-weight: ${state.weight};`
+          `font-size: ${emValue()}em;`,
+          `font-weight: ${state.weight};`,
+          `line-height: ${state.lineHeight}em;`
         ];
         if (state.style === 'italic') lines.push(`font-style: italic;`);
         cssOutput.textContent = lines.join('\n');
@@ -819,15 +839,39 @@
 
       if (specimen) {
         specimen.style.fontFamily = `"${cfg.family}", ${fallback}`;
+        specimen.classList.remove('leading-relaxed');
       }
 
       // Size slider
-      if (slider && specimen) {
-        slider.addEventListener('input', () => {
-          state.size = parseInt(slider.value, 10);
-          specimen.style.fontSize = state.size + 'px';
-          if (sizeDisplay) sizeDisplay.textContent = state.size + 'px';
+      if (sizeSlider && specimen) {
+        sizeSlider.addEventListener('input', () => {
+          state.size = parseInt(sizeSlider.value, 10);
+          updateSpecimen();
+          updateDisplays();
           updateCSSOutput();
+        });
+      }
+
+      // Line height slider
+      if (lineHeightSlider) {
+        lineHeightSlider.addEventListener('input', () => {
+          state.lineHeight = parseFloat(parseFloat(lineHeightSlider.value).toFixed(1));
+          updateSpecimen();
+          updateDisplays();
+          updateCSSOutput();
+        });
+      }
+
+      // Base font size input
+      if (baseFontInput) {
+        baseFontInput.addEventListener('input', () => {
+          const v = parseInt(baseFontInput.value, 10);
+          if (v >= 8 && v <= 32) {
+            state.baseFontSize = v;
+            updateSpecimen();
+            updateDisplays();
+            updateCSSOutput();
+          }
         });
       }
 
@@ -871,6 +915,8 @@
       }
 
       // Initial render
+      updateSpecimen();
+      updateDisplays();
       updateCSSOutput();
     }
 
