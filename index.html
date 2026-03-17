@@ -252,11 +252,15 @@
         </div>
         <div>
           <label class="text-xs font-medium text-medium-grey uppercase tracking-wider mb-2 block">Background</label>
-          <button id="logo-bg-toggle" class="flex items-center gap-2 text-sm border border-light-grey rounded-lg px-3 py-2 bg-white hover:bg-light-grey/30 transition-colors" title="Toggle light/dark background">
-            <svg class="w-4 h-4 logo-bg-icon-light" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="12" cy="12" r="5"/><path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/></svg>
-            <svg class="w-4 h-4 logo-bg-icon-dark hidden" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
-            <span class="logo-bg-label">Light</span>
-          </button>
+          <label class="flex items-center gap-2 text-sm cursor-pointer border border-light-grey rounded-lg px-3 py-2 bg-white">
+            <svg class="w-4 h-4 text-medium-grey" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="12" cy="12" r="5"/><path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/></svg>
+            <div class="relative">
+              <input type="checkbox" id="logo-bg-toggle" class="sr-only peer">
+              <div class="w-9 h-5 bg-light-grey rounded-full peer-checked:bg-nearly-black transition-colors"></div>
+              <div class="absolute left-0.5 top-0.5 w-4 h-4 bg-white rounded-full shadow transition-transform peer-checked:translate-x-4"></div>
+            </div>
+            <svg class="w-4 h-4 text-medium-grey" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+          </label>
         </div>
       </div>
 
@@ -333,11 +337,15 @@
           </div>
           <div>
             <label class="text-xs font-medium text-medium-grey uppercase tracking-wider mb-2 block">Background</label>
-            <button id="app-icon-bg-toggle" class="flex items-center gap-2 text-sm border border-light-grey rounded-lg px-3 py-2 bg-white hover:bg-light-grey/30 transition-colors" title="Toggle light/dark background">
-              <svg class="w-4 h-4 app-bg-icon-light" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="12" cy="12" r="5"/><path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/></svg>
-              <svg class="w-4 h-4 app-bg-icon-dark hidden" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
-              <span class="app-bg-label">Light</span>
-            </button>
+            <label class="flex items-center gap-2 text-sm cursor-pointer border border-light-grey rounded-lg px-3 py-2 bg-white">
+              <svg class="w-4 h-4 text-medium-grey" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="12" cy="12" r="5"/><path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/></svg>
+              <div class="relative">
+                <input type="checkbox" id="app-icon-bg-toggle" class="sr-only peer">
+                <div class="w-9 h-5 bg-light-grey rounded-full peer-checked:bg-nearly-black transition-colors"></div>
+                <div class="absolute left-0.5 top-0.5 w-4 h-4 bg-white rounded-full shadow transition-transform peer-checked:translate-x-4"></div>
+              </div>
+              <svg class="w-4 h-4 text-medium-grey" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+            </label>
           </div>
         </div>
 

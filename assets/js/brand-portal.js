@@ -463,12 +463,8 @@
         card.classList.toggle('bg-white', !logoDarkBg);
         card.classList.toggle('text-nearly-black', !logoDarkBg);
       });
-      const btn = document.getElementById('logo-bg-toggle');
-      if (btn) {
-        btn.querySelector('.logo-bg-icon-light').classList.toggle('hidden', logoDarkBg);
-        btn.querySelector('.logo-bg-icon-dark').classList.toggle('hidden', !logoDarkBg);
-        btn.querySelector('.logo-bg-label').textContent = logoDarkBg ? 'Dark' : 'Light';
-      }
+      const cb = document.getElementById('logo-bg-toggle');
+      if (cb) cb.checked = logoDarkBg;
     }
 
     function applyAppIconBg() {
@@ -480,12 +476,8 @@
         card.classList.toggle('bg-white', !appIconDarkBg);
         card.classList.toggle('text-nearly-black', !appIconDarkBg);
       });
-      const btn = document.getElementById('app-icon-bg-toggle');
-      if (btn) {
-        btn.querySelector('.app-bg-icon-light').classList.toggle('hidden', appIconDarkBg);
-        btn.querySelector('.app-bg-icon-dark').classList.toggle('hidden', !appIconDarkBg);
-        btn.querySelector('.app-bg-label').textContent = appIconDarkBg ? 'Dark' : 'Light';
-      }
+      const cb = document.getElementById('app-icon-bg-toggle');
+      if (cb) cb.checked = appIconDarkBg;
     }
 
     /**
@@ -522,10 +514,8 @@
           loadLogoSVG(el, type);
         }
       });
-      // Auto-switch to dark bg for light colours, then apply
-      if (LIGHT_COLORS.includes(activeColor)) {
-        logoDarkBg = true;
-      }
+      // Auto-switch bg based on selected colour
+      logoDarkBg = LIGHT_COLORS.includes(activeColor);
       applyLogoBg();
     }
 
@@ -622,10 +612,8 @@
           img.src = newSrc;
         });
       });
-      // Auto-switch to dark bg for light colours, then apply
-      if (LIGHT_COLORS.includes(appIconColor)) {
-        appIconDarkBg = true;
-      }
+      // Auto-switch bg based on selected colour
+      appIconDarkBg = LIGHT_COLORS.includes(appIconColor);
       applyAppIconBg();
     }
 
@@ -784,19 +772,19 @@
       }
 
       // Logo background toggle
-      const logoBgBtn = document.getElementById('logo-bg-toggle');
-      if (logoBgBtn) {
-        logoBgBtn.addEventListener('click', () => {
-          logoDarkBg = !logoDarkBg;
+      const logoBgCb = document.getElementById('logo-bg-toggle');
+      if (logoBgCb) {
+        logoBgCb.addEventListener('change', () => {
+          logoDarkBg = logoBgCb.checked;
           applyLogoBg();
         });
       }
 
       // App icon background toggle
-      const appIconBgBtn = document.getElementById('app-icon-bg-toggle');
-      if (appIconBgBtn) {
-        appIconBgBtn.addEventListener('click', () => {
-          appIconDarkBg = !appIconDarkBg;
+      const appIconBgCb = document.getElementById('app-icon-bg-toggle');
+      if (appIconBgCb) {
+        appIconBgCb.addEventListener('change', () => {
+          appIconDarkBg = appIconBgCb.checked;
           applyAppIconBg();
         });
       }
