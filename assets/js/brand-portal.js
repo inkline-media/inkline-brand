@@ -448,8 +448,45 @@
     let activeColor = 'cobalt';
     let activeFormat = 'svg';
     let canvasMode = false;
+    let logoDarkBg = false;
+    let appIconDarkBg = false;
 
     const LOGO_TYPES = ['horizontal', 'vertical', 'wordmark', 'logomark'];
+    const LIGHT_COLORS = ['white', 'lime']; // colours that need dark bg by default
+
+    function applyLogoBg() {
+      const grid = document.getElementById('logo-grid');
+      if (!grid) return;
+      grid.querySelectorAll(':scope > div').forEach(card => {
+        card.classList.toggle('bg-nearly-black', logoDarkBg);
+        card.classList.toggle('text-white', logoDarkBg);
+        card.classList.toggle('bg-white', !logoDarkBg);
+        card.classList.toggle('text-nearly-black', !logoDarkBg);
+      });
+      const btn = document.getElementById('logo-bg-toggle');
+      if (btn) {
+        btn.querySelector('.logo-bg-icon-light').classList.toggle('hidden', logoDarkBg);
+        btn.querySelector('.logo-bg-icon-dark').classList.toggle('hidden', !logoDarkBg);
+        btn.querySelector('.logo-bg-label').textContent = logoDarkBg ? 'Dark' : 'Light';
+      }
+    }
+
+    function applyAppIconBg() {
+      const grid = document.getElementById('app-icons-grid');
+      if (!grid) return;
+      grid.querySelectorAll(':scope > div').forEach(card => {
+        card.classList.toggle('bg-nearly-black', appIconDarkBg);
+        card.classList.toggle('text-white', appIconDarkBg);
+        card.classList.toggle('bg-white', !appIconDarkBg);
+        card.classList.toggle('text-nearly-black', !appIconDarkBg);
+      });
+      const btn = document.getElementById('app-icon-bg-toggle');
+      if (btn) {
+        btn.querySelector('.app-bg-icon-light').classList.toggle('hidden', appIconDarkBg);
+        btn.querySelector('.app-bg-icon-dark').classList.toggle('hidden', !appIconDarkBg);
+        btn.querySelector('.app-bg-label').textContent = appIconDarkBg ? 'Dark' : 'Light';
+      }
+    }
 
     /**
      * Build the file path for a logo asset.
@@ -483,14 +520,13 @@
         const el = document.querySelector(`.logo-preview[data-type="${type}"]`);
         if (el) {
           loadLogoSVG(el, type);
-          // Toggle dark background for white/lime logos so they're visible
-          if (activeColor === 'white' || activeColor === 'lime') {
-            el.classList.add('logo-preview--dark');
-          } else {
-            el.classList.remove('logo-preview--dark');
-          }
         }
       });
+      // Auto-switch to dark bg for light colours, then apply
+      if (LIGHT_COLORS.includes(activeColor)) {
+        logoDarkBg = true;
+      }
+      applyLogoBg();
     }
 
     /**
@@ -580,24 +616,17 @@
      */
     function refreshAppIcons() {
       document.querySelectorAll('.app-icon-sizes[data-platform]').forEach(el => {
-        const platform = el.dataset.platform;
-        const isDark = appIconColor === 'white' || appIconColor === 'lime';
         el.querySelectorAll('img').forEach(img => {
           const oldSrc = img.getAttribute('src');
-          // Replace color in the path
           const newSrc = oldSrc.replace(/inkline-icon-[a-z]+-/, `inkline-icon-${appIconColor}-`);
           img.src = newSrc;
         });
-        // Toggle dark background on parent card
-        const card = el.closest('.bg-white');
-        if (card) {
-          if (isDark) {
-            el.classList.add('logo-preview--dark');
-          } else {
-            el.classList.remove('logo-preview--dark');
-          }
-        }
       });
+      // Auto-switch to dark bg for light colours, then apply
+      if (LIGHT_COLORS.includes(appIconColor)) {
+        appIconDarkBg = true;
+      }
+      applyAppIconBg();
     }
 
     /**
@@ -667,9 +696,16 @@
           picker.querySelectorAll('[data-color]').forEach(s => {
             s.classList.remove('border-cerulean', 'border-cobalt', 'border-magenta', 'border-bubblegum', 'border-shamrock', 'border-lime', 'border-nearly-black', 'border-medium-grey', 'ring-2', 'ring-cerulean', 'ring-cobalt', 'ring-magenta', 'ring-bubblegum', 'ring-shamrock', 'ring-lime', 'ring-nearly-black', 'ring-offset-2', 'ring-1', 'ring-light-grey');
             s.classList.add('border-transparent');
+            // Restore white swatch outline so it stays visible
+            if (s.dataset.color === 'white') {
+              s.classList.add('ring-1', 'ring-light-grey');
+            }
           });
           swatch.classList.remove('border-transparent');
           swatch.classList.add('ring-2', 'ring-offset-2');
+          if (swatch.dataset.color === 'white') {
+            swatch.classList.remove('ring-1', 'ring-light-grey');
+          }
           refreshAll();
         });
       }
@@ -732,12 +768,36 @@
           if (!swatch) return;
           appIconColor = swatch.dataset.color;
           appIconPicker.querySelectorAll('[data-color]').forEach(s => {
-            s.classList.remove('border-cerulean', 'border-cobalt', 'border-magenta', 'border-bubblegum', 'border-shamrock', 'border-lime', 'border-nearly-black', 'border-medium-grey', 'ring-2', 'ring-cerulean', 'ring-cobalt', 'ring-magenta', 'ring-bubblegum', 'ring-shamrock', 'ring-lime', 'ring-nearly-black', 'ring-offset-2');
+            s.classList.remove('border-cerulean', 'border-cobalt', 'border-magenta', 'border-bubblegum', 'border-shamrock', 'border-lime', 'border-nearly-black', 'border-medium-grey', 'ring-2', 'ring-cerulean', 'ring-cobalt', 'ring-magenta', 'ring-bubblegum', 'ring-shamrock', 'ring-lime', 'ring-nearly-black', 'ring-offset-2', 'ring-1', 'ring-light-grey');
             s.classList.add('border-transparent');
+            if (s.dataset.color === 'white') {
+              s.classList.add('ring-1', 'ring-light-grey');
+            }
           });
           swatch.classList.remove('border-transparent');
           swatch.classList.add('ring-2', 'ring-offset-2');
+          if (swatch.dataset.color === 'white') {
+            swatch.classList.remove('ring-1', 'ring-light-grey');
+          }
           refreshAppIcons();
+        });
+      }
+
+      // Logo background toggle
+      const logoBgBtn = document.getElementById('logo-bg-toggle');
+      if (logoBgBtn) {
+        logoBgBtn.addEventListener('click', () => {
+          logoDarkBg = !logoDarkBg;
+          applyLogoBg();
+        });
+      }
+
+      // App icon background toggle
+      const appIconBgBtn = document.getElementById('app-icon-bg-toggle');
+      if (appIconBgBtn) {
+        appIconBgBtn.addEventListener('click', () => {
+          appIconDarkBg = !appIconDarkBg;
+          applyAppIconBg();
         });
       }
 
@@ -1212,9 +1272,12 @@
       if (!m) return;
       m.classList.add('is-active');
 
-      // Set name
+      // Set name and FA class
       const nameEl = document.getElementById('icon-modal-name');
       if (nameEl) nameEl.textContent = modalIcon.n;
+      const faClassEl = document.getElementById('icon-modal-fa-class');
+      const faClass = `fa-${modalIcon.c} fa-${modalIcon.n}`;
+      if (faClassEl) faClassEl.textContent = `(${faClass})`;
 
       // Load SVG preview
       const preview = document.getElementById('icon-modal-preview');
@@ -1407,6 +1470,16 @@
         m.querySelector('.modal-close')?.addEventListener('click', closeModal);
         m.addEventListener('click', e => {
           if (e.target === m) closeModal();
+        });
+      }
+
+      // Title click-to-copy FA class
+      const titleBtn = document.getElementById('icon-modal-title-btn');
+      if (titleBtn) {
+        titleBtn.addEventListener('click', () => {
+          if (!modalIcon) return;
+          const faClass = `fa-${modalIcon.c} fa-${modalIcon.n}`;
+          copyToClipboard(faClass);
         });
       }
 
