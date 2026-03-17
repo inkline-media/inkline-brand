@@ -789,6 +789,20 @@
       { id: 'font-ibm-plex',    family: 'IBM Plex Serif', urlName: 'IBM+Plex+Serif' }
     ];
 
+    const HEADING_TEXT = 'The quick brown fox jumps over the lazy dog';
+    const LOREM_PARAGRAPHS = [
+      'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.',
+      'Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.',
+      'Curabitur pretium tincidunt lacus. Nulla gravida orci a odio. Nullam varius, turpis et commodo pharetra, est eros bibendum elit, nec luctus magna felis sollicitudin mauris. Integer in mauris eu nibh euismod gravida.',
+      'Praesent commodo cursus magna, vel scelerisque nisl consectetur et. Vivamus sagittis lacus vel augue laoreet rutrum faucibus dolor auctor. Donec sed odio dui. Cras mattis consectetur purus sit amet fermentum.',
+      'Maecenas sed diam eget risus varius blandit sit amet non magna. Morbi leo risus, porta ac consectetur ac, vestibulum at eros. Etiam porta sem malesuada magna mollis euismod. Aenean lacinia bibendum nulla sed consectetur.',
+      'Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus. Vestibulum id ligula porta felis euismod semper. Nullam quis risus eget urna mollis ornare vel eu leo.',
+      'Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Sed posuere consectetur est at lobortis. Donec ullamcorper nulla non metus auctor fringilla. Cras justo odio, dapibus ut facilisis in.',
+      'Nulla vitae elit libero, a pharetra augue. Integer posuere erat a ante venenatis dapibus posuere velit aliquet. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Aenean eu leo quam.',
+      'Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia curae. Suspendisse potenti. Aliquam erat volutpat. Sed fringilla mauris sit amet nibh. Donec sodales sagittis magna.',
+      'Phasellus viverra nulla ut metus varius laoreet. Quisque rutrum aenean imperdiet. Etiam ultricies nisi vel augue. Curabitur ullamcorper ultricies nisi. Nam eget dui. Etiam rhoncus. Maecenas tempus, tellus eget condimentum rhoncus.'
+    ];
+
     function initPanel(cfg) {
       const panel = document.getElementById(cfg.id);
       if (!panel) return;
@@ -906,6 +920,58 @@
           updateCSSOutput();
         });
       });
+
+      // Preview text buttons (Heading / Paragraph)
+      const previewBtns = panel.querySelectorAll('.preview-btn');
+      const paraCountInput = panel.querySelector('.paragraph-count');
+      const paraCountLabel = panel.querySelector('.paragraph-count-label');
+      let userEdited = false;
+
+      if (specimen) {
+        specimen.addEventListener('input', () => { userEdited = true; });
+      }
+
+      function setPreviewText(type, count) {
+        if (!specimen) return;
+        userEdited = false;
+        if (type === 'heading') {
+          specimen.textContent = HEADING_TEXT;
+        } else {
+          const n = Math.max(1, Math.min(count || 1, LOREM_PARAGRAPHS.length));
+          specimen.innerHTML = LOREM_PARAGRAPHS.slice(0, n)
+            .map(p => '<p style="margin-bottom:0.75em">' + p + '</p>').join('');
+        }
+      }
+
+      function activatePreviewBtn(btn) {
+        previewBtns.forEach(b => {
+          b.classList.remove('border-cerulean', 'text-cerulean', 'bg-cerulean/5');
+          b.classList.add('border-light-grey');
+        });
+        btn.classList.add('border-cerulean', 'text-cerulean', 'bg-cerulean/5');
+        btn.classList.remove('border-light-grey');
+      }
+
+      previewBtns.forEach(btn => {
+        btn.addEventListener('click', () => {
+          const type = btn.dataset.preview;
+          activatePreviewBtn(btn);
+          const showParaCount = type === 'paragraph';
+          if (paraCountInput) paraCountInput.classList.toggle('hidden', !showParaCount);
+          if (paraCountLabel) paraCountLabel.classList.toggle('hidden', !showParaCount);
+          const count = paraCountInput ? parseInt(paraCountInput.value, 10) : 1;
+          setPreviewText(type, count);
+        });
+      });
+
+      if (paraCountInput) {
+        paraCountInput.addEventListener('input', () => {
+          const activeBtn = panel.querySelector('.preview-btn.text-cerulean');
+          if (activeBtn && activeBtn.dataset.preview === 'paragraph') {
+            setPreviewText('paragraph', parseInt(paraCountInput.value, 10));
+          }
+        });
+      }
 
       // Copy CSS button
       if (cssCopyBtn && cssOutput) {
