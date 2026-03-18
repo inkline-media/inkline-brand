@@ -452,7 +452,7 @@
     let appIconDarkBg = false;
 
     const LOGO_TYPES = ['horizontal', 'vertical', 'wordmark', 'logomark'];
-    const LIGHT_COLORS = ['white', 'lime']; // colours that need dark bg by default
+    const LIGHT_COLORS = ['white']; // colours that need dark bg by default
 
     function applyLogoBg() {
       const grid = document.getElementById('logo-grid');
@@ -462,6 +462,15 @@
         card.classList.toggle('text-white', logoDarkBg);
         card.classList.toggle('bg-white', !logoDarkBg);
         card.classList.toggle('text-nearly-black', !logoDarkBg);
+        // Invert download buttons
+        card.querySelectorAll('.logo-download').forEach(btn => {
+          btn.classList.toggle('bg-nearly-black', !logoDarkBg);
+          btn.classList.toggle('text-white', !logoDarkBg);
+          btn.classList.toggle('hover:bg-nearly-black/80', !logoDarkBg);
+          btn.classList.toggle('bg-white', logoDarkBg);
+          btn.classList.toggle('text-nearly-black', logoDarkBg);
+          btn.classList.toggle('hover:bg-white/80', logoDarkBg);
+        });
       });
       const cb = document.getElementById('logo-bg-toggle');
       if (cb) cb.checked = logoDarkBg;
@@ -1247,7 +1256,7 @@
     function buildUsageBlock(label, code) {
       return `<div class="flex items-center justify-between bg-nearly-black rounded-lg px-3 py-2 group">
         <code class="text-green-400 text-xs font-mono truncate mr-2">${escapeHTML(code)}</code>
-        <button class="icon-usage-copy shrink-0 text-xs text-white/50 hover:text-white transition-colors" data-code="${escapeHTML(code)}">Copy</button>
+        <button class="icon-usage-copy shrink-0 text-white/50 hover:text-white transition-colors" data-code="${escapeHTML(code)}" title="Copy code"><span class="sr-only">Copy</span><svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg></button>
       </div>`;
     }
 
@@ -1264,8 +1273,7 @@
       const nameEl = document.getElementById('icon-modal-name');
       if (nameEl) nameEl.textContent = modalIcon.n;
       const faClassEl = document.getElementById('icon-modal-fa-class');
-      const faClass = `fa-${modalIcon.c} fa-${modalIcon.n}`;
-      if (faClassEl) faClassEl.textContent = `(${faClass})`;
+      if (faClassEl) faClassEl.textContent = `(fa-${modalIcon.n})`;
 
       // Load SVG preview
       const preview = document.getElementById('icon-modal-preview');
@@ -1466,8 +1474,7 @@
       if (titleBtn) {
         titleBtn.addEventListener('click', () => {
           if (!modalIcon) return;
-          const faClass = `fa-${modalIcon.c} fa-${modalIcon.n}`;
-          copyToClipboard(faClass);
+          copyToClipboard(`fa-${modalIcon.n}`);
         });
       }
 
